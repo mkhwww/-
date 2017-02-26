@@ -1,0 +1,481 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>美团外卖</title>
+<style type="text/css">
+	*{padding:0px;margin:0px;}
+	.header{background-color:#ffd705;background-image:url(img/header.png);background-repeat:no-repeat;background-position:50%;width:1348px;margin:auto;}
+	#p1{padding-left:100px;padding-top:2px;}
+	
+	.header span{color:#FFF;padding-left:600px;}
+	.outer{background-color:#F2F2F2;width:1348px;margin:auto;}
+	.myShop{font-size:18px;text-align:center;padding-top:30px;color:#03C;font-weight:bold;}
+	.myShop span{color:#F30;}
+	.inner1{background-color:#FFF;margin:auto;height:380px;margin-left:30px;width:1285px;margin-top:30px;}
+	.inner1 ul{list-style:none;}
+	.inner1 ul li{float:left;margin-right:20px;margin-left:18px;margin-top:20px;}
+	.inner2{background-color:#FFF;margin:auto;width:1285px;height:380px;margin-left:30px;margin-top:20px;}
+	.inner2 ul{list-style:none;}
+	.inner2 ul li{float:left;margin-right:20px;margin-left:18px;margin-top:20px;}
+	.addShopCar{float:right;}
+	.text{padding-top:40px;}
+	.text span{font-weight:bold;}
+	.number{color:#ffa500;font-weight:bold;font-size:15px;padding-top:10px;float:right;}
+	.detail{color:#CCC;font-size:14px;padding-top:36px;padding-bottom:10px;}
+	.carDex{background-color:#FFF;margin:auto;height:380px;margin-left:30px;width:1285px;margin-top:40px;display:none;}
+	.tableFirst{background-color:#b5e0ff}
+	#t{padding-bottom:10px;}
+	.carDex span{float:right;color:#ff0000;font-weight:bold;}
+	.sum{background-color:#ffd705;}
+	.return{color:#06F;font-weight:bold;padding-top:20px;}
+	#tips{text-align:center;color:#F33;font-size:14px;font-weight:bold;}
+	#price{float:right;}
+	.time{float:right;}
+	.free{padding-left:50px;}
+</style>
+
+<script language="javascript">
+	var num=0;
+	
+	//显示购物车
+	function myShopCar(){
+		var sum=0;
+		document.getElementById("out").style.display="none";	
+		document.getElementById("in").style.display="none";
+		document.getElementById("table").style.display="block";
+		
+		var table=document.getElementById("t");	
+		var tr = table.childNodes;
+		var allValue = document.getElementById("All");
+		for(var i=0;i<tr.length;i++){
+		//	alert(tr[i].innerHTML);	
+		}
+		var child=tr[1].childNodes;
+		for(var i=0;i<child.length;i++){
+			//alert(child[i].innerHTML);	
+		}
+		for(var i=2;i<child.length;i++){
+			
+			var k=child[i].childNodes[2].innerHTML
+			
+			k=k.split('元');
+			
+			
+			sum = sum +parseFloat(k[0]);
+			
+		}
+		var all=document.getElementById("All");
+		all.innerHTML=sum;
+		test();
+	}
+	//显示主页
+	function lunch(){
+		document.getElementById("table").style.display="none";
+		document.getElementById("out").style.display="block";	
+		document.getElementById("in").style.display="block";
+		
+		
+	}
+	
+	//加入购物车
+	function addShopCar(obj){
+		num =num+1;
+	
+		var number=document.getElementById("number");
+		number.innerHTML=num;  //把值赋给我的购物车
+		var parentList=obj.parentNode;
+		
+		var all=parentList.childNodes;
+		for(var i=0;i<all.length;i++){
+			//alert(all[i].innerHTML);	
+		}
+		var parent = all[3].childNodes;
+		for(var k=0;k<parent.length;k++){
+		//	alert(parent[k].innerHTML);	
+		}
+		
+		var tableNode=document.getElementById("t");
+		var tr=tableNode.insertRow(-1);
+		var cell0=tr.insertCell(0);
+		var cell1=tr.insertCell(1);
+		var cell2=tr.insertCell(2);
+		var cell3=tr.insertCell(3);
+		cell0.style.textAlign="center";
+		cell1.style.textAlign="center";
+		cell2.style.textAlign="center";
+		cell3.style.textAlign="center";
+		cell0.innerHTML="<input type='checkbox' name='box' onclick='box()'/>";
+		cell1.innerHTML=parent[1].innerHTML;
+		cell2.innerHTML=parent[3].innerHTML;
+		cell3.innerHTML="<input type='button' value='删除' onclick='deleteTableDom(this)'/>";
+		alert("加入购物车成功");
+	}
+	
+	//table全选按钮
+	function choiceAll(obj){
+		var deleteAll=document.getElementById("deleteAll");
+		
+		
+		var table=document.getElementById("t");
+		var tableChild = table.childNodes;
+		for(var i=0;i<tableChild.length;i++){
+			//alert(tableChild[i].innerHTML);	
+		}
+		var child=tableChild[1].childNodes;//所有行
+		var box = document.getElementsByName("box");
+		
+		for(var i=0;i<child.length;i++){
+			
+			if(obj.checked){
+				deleteAll.disabled=false;
+				for(var j=0;j<box.length;j++){
+					
+					box[i].checked="true";	
+				}
+			}else{
+				deleteAll.disabled=true;
+				for(var j=0;j<box.length;j++){
+					box[i].checked="";	
+				}	
+			}
+			
+		}
+		
+		
+	}
+	
+	function box(){
+		var table=document.getElementById("t");
+		var tableChild = table.childNodes;
+		var child=tableChild[1].childNodes;//所有行
+		var box = document.getElementsByName("box");//所有复选框
+		var chooseAll=document.getElementById("chooseAll");
+		var deleteAll = document.getElementById("deleteAll");
+		var flag=true;
+			for(var i=0;i<box.length;i++){
+				if(!box[i].checked){
+					deleteAll.disabled=true;	
+				}
+		
+			}
+		
+			
+			for(var k=0;k<box.length;k++){
+				
+				if(box[k].checked){
+					
+					deleteAll.disabled=false;
+				}
+				
+				if(!box[k].checked){
+					
+					chooseAll.checked="";
+					
+					flag=false;
+				}
+			}
+		
+		if(flag){
+			chooseAll.checked="true";
+		}
+		
+		
+			
+	}
+	
+	//table删除按钮
+	function deleteTableDom(obj){
+		var box = document.getElementsByName("box");
+		var deleteAll = document.getElementById("deleteAll");
+		if(confirm("确定要删除吗？")){
+			
+		
+		var tableNode=document.getElementById("t");
+		var tr = obj.parentNode.parentNode;
+		var trIndex= tr.rowIndex;
+		tableNode.deleteRow(trIndex);
+		
+		num =num-1;
+	
+		var number=document.getElementById("number");
+		number.innerHTML=num;  //把删除后的值赋给我的购物车
+		alert("删除成功");
+		var child = tr.childNodes;
+		for(var i=0;i<child.length;i++){
+			//alert(child[i].innerHTML);	
+		}
+		var price=child[2].innerHTML.split('元');
+		
+		price=parseFloat(price[0]);
+		
+		var all = document.getElementById("All");
+		all.innerHTML=all.innerHTML-price;
+		test();
+		deleteAll.disabled=true;
+		
+		}else{
+			
+			for(var k=0;k<box.length;k++){
+				
+				if(box[k].checked){
+					deleteAll.disabled=false;
+				}
+				
+			}
+			
+			
+			}
+		
+		
+	}
+	function test(){
+		//判断tips文本是否出现
+		var tips=document.getElementById("tips");
+		
+		if(num==0){
+			tips.innerHTML="购物车空了!";
+		}else if(num>0){
+			tips.innerHTML="";	
+		}
+	}
+	
+	
+	
+	//全部删除
+	function deleteAll(){
+	
+		if(confirm("确定要删除选中的所有订单吗？")){
+		var table=document.getElementById("t");
+		var deleteAll=document.getElementById("deleteAll");
+		var box = document.getElementsByName("box");
+		
+		
+			for(var k=0;k<box.length;k++){
+		
+				if(box[k].checked){
+				
+				
+					var tr=box[k].parentNode.parentNode;
+					var index=tr.rowIndex;
+					var price=tr.cells[2].innerHTML;
+					
+					var p =price.split('元');
+					price=parseFloat(p[0]);
+					
+					table.deleteRow(index);
+					var all=document.getElementById("All");
+					
+					all.innerHTML=all.innerHTML-price;
+				
+					num=num-1;
+					var number=document.getElementById("number");
+					number.innerHTML=num;  //把值赋给我的购物车
+					
+					
+					k--;
+					
+				}
+			}
+			alert("删除成功")
+			test();
+			deleteAll.disabled=true;
+			var chooseAll=document.getElementById("chooseAll");
+			chooseAll.checked="";
+		}else{
+		}
+	}
+	
+	//结算
+	function over(){
+		var all=document.getElementById("All");
+		alert("总共付款"+all.innerHTML+"元");	
+	}
+	
+</script>
+</head>
+
+<body>
+	<div class="header">
+    	
+    
+      <img src="img/ceiling-logo2.png" id="p1"/> 
+   
+       <span>搜索</span>
+     
+    
+     
+    </div>
+	<div class="outer" >
+    	<p class="myShop" onclick="myShopCar()">我的购物车(<span id="number">0</span>)</p>
+    	<div class="inner1" id="out">
+        	<ul>
+            	<li>
+                	<img src="img/1cde.jpg" width="280" height="200">  
+                    <p class="text">
+                    <span id="name">
+                    A米汉堡
+                    </span>
+                   
+                    <span id="price">
+                    16元/份
+                    </span>
+                    </p>
+                   
+                    <p class="number">月销1122份</p>
+                    <p class="detail">起送￥10<span class="free">免配送费</span><span class="time">45分钟</span></p>
+                  	<input type="button" value="加入购物车" onclick="addShopCar(this)" class="addShopCar"/>
+              
+                    
+                    
+                 </li>
+                 <li>
+                	<img src="img/3a31d.jpg" width="280" height="200">  
+                      <p class="text">
+                    <span id="name">
+                    杨记小厨
+                    </span>
+                   
+                    <span id="price">
+                    17.5元/份
+                    </span>
+                    </p>
+                    <p class="number">月销4639份</p>
+                    <p class="detail">起送￥10<span class="free">免配送费</span><span class="time">38分钟</span></p>
+                  	<input type="button" value="加入购物车" onclick="addShopCar(this)" class="addShopCar"/>
+                 </li>
+                 <li>
+                	<img src="img/9ecd.jpg" width="280" height="200">  
+                      <p class="text">
+                    <span id="name">
+                   	杨铭宇黄焖鸡米饭
+                    </span>
+                  
+                    
+                    <span id="price">
+                    18元/份
+                    </span>
+                    </p>
+                    <p class="number">月销2571份</p>
+                    <p class="detail">起送￥10<span class="free">免配送费</span><span class="time">25分钟</span></p>
+                  	<input type="button" value="加入购物车" onclick="addShopCar(this)" class="addShopCar"/>
+                 </li>
+                 <li>
+                	<img src="img/d64c553.jpg" width="290" height="200"> 
+                      <p class="text">
+                    <span id="name">
+                   	烤肉拌饭
+                    </span>
+                   
+                    <span id="price">
+                    18元/份
+                    </span>
+                    </p>
+                    <p class="number">月销2347份</p>
+                    <p class="detail">起送￥10<span class="free">免配送费</span><span class="time">29分钟</span></p>
+                  	<input type="button" value="加入购物车" onclick="addShopCar(this)" class="addShopCar"/> 
+                 </li>
+                 
+               
+                   
+            
+            
+            </ul>
+       
+        </div>
+        <div class="inner2" id="in">
+        <ul>
+            	<li>
+                	<img src="img/3d875.jpg" width="280" height="200">  
+                     <p class="text">
+                    <span id="name">
+                    有名堂(焗饭、小炒)
+                    </span>
+                 
+                    <span id="price">
+                    14元/份
+                    </span>
+                    </p>
+                    <p class="number">月销2332份</p>
+                    <p class="detail">起送￥0<span class="free">免配送费</span><span class="time">45分钟</span></p>
+                  	<input type="button" value="加入购物车" onclick="addShopCar(this)" class="addShopCar"/>
+              
+                    
+                    
+                 </li>
+                 <li>
+                	<img src="img/880259b.jpg" width="280" height="200">  
+                     <p class="text">
+                    <span id="name">
+                   	翔仔湾(美食特惠)
+                    </span>
+                  
+                    <span id="price">
+                    20元/份
+                    </span>
+                    </p>
+                    <p class="number">月销1802份</p>
+                    <p class="detail">起送￥10<span class="free">免配送费</span><span class="time">45分钟</span></p>
+                  	<input type="button" value="加入购物车" onclick="addShopCar(this)" class="addShopCar"/>
+                 </li>
+                 <li>
+                	<img src="img/1b718f.jpg" width="280" height="200">  
+                     <p class="text">
+                    <span id="name">
+                   	食尚便当
+                    </span>
+                 
+                    <span id="price">
+                    21元/份
+                    </span>
+                    </p>
+                    <p class="number">月销1122份</p>
+                    <p class="detail">起送￥10<span class="free">免配送费</span><span class="time">45分钟</span></p>
+                  	<input type="button" value="加入购物车" onclick="addShopCar(this)" class="addShopCar"/>
+                 </li>
+                 <li>
+                	<img src="img/4c981e4.jpg" width="290" height="200"> 
+                     <p class="text">
+                    <span id="name">
+                    格子那只水饺
+                    </span>
+                   
+                    <span id="price">
+                    13元/份
+                    </span>
+                    </p>
+                    <p class="number">月销1122份</p>
+                    <p class="detail">起送￥10<span class="free">免配送费</span><span class="time">45分钟</span></p>
+                  	<input type="button" value="加入购物车" onclick="addShopCar(this)" class="addShopCar"/> 
+                 </li>
+               
+            </ul>
+        
+        </div>
+        
+        <div class="carDex" id="table">
+        	<table width="100%" id="t" cellpadding="0" cellspacing="0">
+            	<tr class="tableFirst">
+                	<th>
+                    	全选<input type="checkbox" id="chooseAll" onclick="choiceAll(this)"/>
+                    </th>
+                    <th>
+                    	菜品
+                    </th>
+                    <th>
+                    	价格（元/份）
+                    </th>
+                    <th>
+                    	操作
+                    </th>
+                </tr>
+            </table>
+        <input type="button" value="全部删除"  disabled="disabled" id="deleteAll" onclick="deleteAll()"/>
+        <span >合计￥<a id="All" >0</a><input type="button" value="结算" class="sum" onclick="over()"/></span>
+        <p id="tips"></p>
+        <P class="return" onclick="lunch()">继续任性点餐</P>
+        </div>
+        
+    </div>
+</body>
+</html>
